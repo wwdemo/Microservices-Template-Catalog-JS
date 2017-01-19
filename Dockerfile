@@ -28,7 +28,7 @@ COPY . /app/
 EXPOSE  80
 
 ## script_to_launch_sidecar_and_app
-ENTRYPOINT ["a8sidecar", "--register", "--proxy", "node", "/app/app.js"]
+ENTRYPOINT ["a8sidecar", "--register", "--proxy", "node", "/app/server/server.js"]
 
 ## Inject environment variables into the microservices container
 ENV A8_SERVICE=catalogservice:v1.0
