@@ -18,17 +18,20 @@ MAINTAINER Cato Johannessen "cjohannessen@us.ibm.com"
 RUN curl -sSL https://github.com/amalgam8/amalgam8/releases/download/v0.4.2/a8sidecar.sh | sh
 
 # Install the application
-# ADD package.json /app/package.json 
+RUN mkdir -p /app
+WORKDIR /app
+
+COPY package.json /app/package.json 
 RUN npm install  
-# ADD app.js /app/app.js
+COPY . /app/
 # ENV WEB_PORT 80
 EXPOSE  80
 
 ## script_to_launch_sidecar_and_app
-ENTRYPOINT ["a8sidecar", "--register", "--proxy", "node", "."]
+ENTRYPOINT ["a8sidecar", "--register", "--proxy", "node", "/app/app.js"]
 
 ## Inject environment variables into the microservices container
-ENV A8_SERVICE=Catalog:v1.0
+ENV A8_SERVICE=catalogservice:v1.0
 ENV A8_ENDPOINT_PORT=8080
 ENV A8_ENDPOINT_TYPE=http
 ENV A8_REGISTRY_URL=http://dev-a8-registry-CBJ-123.mybluemix.net
